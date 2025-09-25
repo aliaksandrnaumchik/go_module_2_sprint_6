@@ -24,24 +24,24 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 
-	cwd, err := os.Getwd()
+	absolutePath, err := os.Getwd()
 	if err != nil {
 		log.Printf("Ошибка при получении текущей директории: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
 
-	parentDir := filepath.Dir(cwd)
-	filePath := filepath.Join(parentDir, "index.html")
+	parentDirPath := filepath.Dir(absolutePath)
+	filePath := filepath.Join(parentDirPath, "index.html")
 
-	tmpl, err := template.ParseFiles(filePath)
+	templateFile, err := template.ParseFiles(filePath)
 	if err != nil {
 		log.Printf("Ошибка при парсинге шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
 
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := templateFile.Execute(w, nil); err != nil {
 		log.Printf("Ошибка при выполнении шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 	}

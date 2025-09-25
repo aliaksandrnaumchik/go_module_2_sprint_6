@@ -17,8 +17,13 @@ func AutoConvert(input string) (string, error) {
 		text := morse.ToText(input)
 		return text, nil
 	} else if isPlainText(input) {
-		morse := morse.ToMorse(input)
-		return morse, nil
+		if isWindows1251(input) {
+			utf8String := convertWindows1251ToUTF8(input)
+			return morse.ToMorse(utf8String), nil
+		} else {
+			morse := morse.ToMorse(input)
+			return morse, nil
+		}
 	} else if !isUtf8(input) {
 		return utf8Convert(input)
 	}

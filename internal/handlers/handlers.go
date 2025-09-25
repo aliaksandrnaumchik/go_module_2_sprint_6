@@ -26,16 +26,17 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filePath := filepath.Join(cwd, "../index.html")
+	parentDir := filepath.Dir(cwd)
+	filePath := filepath.Join(parentDir, "index.html")
 
-	templateFile, err := template.ParseFiles(filePath)
+	tmpl, err := template.ParseFiles(filePath)
 	if err != nil {
 		log.Printf("Ошибка при парсинге шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
 
-	if err := templateFile.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, nil); err != nil {
 		log.Printf("Ошибка при выполнении шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return

@@ -107,14 +107,11 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := convertedContent
-
-	encoder := json.NewEncoder(w)
-	encoder.SetIndent("", "    ")
-
-	if err := encoder.Encode(response); err != nil {
-		log.Printf("Ошибка при кодировании ответа: %v", err)
-		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
+	response, err := json.Marshal(convertedContent)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	w.Write(response)
 }

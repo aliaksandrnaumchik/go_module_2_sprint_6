@@ -19,7 +19,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	absolutePath, err := os.Executable()
+	absolutePath, err := os.Getwd()
 	if err != nil {
 		log.Printf("Ошибка при получении текущей директории: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)

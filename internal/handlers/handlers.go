@@ -19,15 +19,14 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	absolutePath, err := os.Getwd()
+	cwd, err := os.Getwd()
 	if err != nil {
 		log.Printf("Ошибка при получении текущей директории: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
 
-	parentDirPath := filepath.Dir(absolutePath)
-	filePath := filepath.Join(parentDirPath, "index.html")
+	filePath := filepath.Join(cwd, "../index.html")
 
 	templateFile, err := template.ParseFiles(filePath)
 	if err != nil {
@@ -41,9 +40,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
-
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {

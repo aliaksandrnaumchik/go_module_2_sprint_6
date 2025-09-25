@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/service"
@@ -107,14 +106,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]interface{}{
-		"original_filename": handler.Filename,
-		"converted_content": convertedContent,
-		"saved_as":          newFilename,
-		"file_size":         strconv.FormatInt(int64(len(content)), 10),
-	}
-
-	w.Header().Set("Content-Type", "application/json")
+	response := convertedContent
 
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "    ")
@@ -124,4 +116,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 }

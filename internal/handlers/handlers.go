@@ -21,9 +21,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-
 	absolutePath, err := os.Executable()
 	if err != nil {
 		log.Printf("Ошибка при получении текущей директории: %v", err)
@@ -45,6 +42,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Ошибка при выполнении шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {

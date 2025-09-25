@@ -17,13 +17,8 @@ func AutoConvert(input string) (string, error) {
 		text := morse.ToText(input)
 		return text, nil
 	} else if isPlainText(input) {
-		if isWindows1251(input) {
-			utf8String := convertWindows1251ToUTF8(input)
-			return morse.ToMorse(utf8String), nil
-		} else {
-			morse := morse.ToMorse(input)
-			return morse, nil
-		}
+		morse := morse.ToMorse(input)
+		return morse, nil
 	} else if !isUtf8(input) {
 		return utf8Convert(input)
 	}
@@ -74,7 +69,7 @@ func convertWindows1251ToUTF8(input string) string {
 	decoder := charmap.Windows1251.NewDecoder()
 	utf8String, err := decoder.Bytes(windows1251Bytes)
 	if err != nil {
-		fmt.Printf("Ошибка декодирования: %v", err)
+		fmt.Errorf("Ошибка декодирования: %v", err)
 	}
 	return string(utf8String)
 }

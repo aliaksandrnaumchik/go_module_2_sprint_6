@@ -108,6 +108,8 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	response := convertedContent
 
+	w.Header().Set("Content-Type", "application/json")
+
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "    ")
 
@@ -116,7 +118,4 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 }

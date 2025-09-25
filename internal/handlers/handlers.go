@@ -31,6 +31,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	parentDir := filepath.Dir(cwd)
 	filePath := filepath.Join(parentDir, INDEX_HTML)
 
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		log.Printf("Файл не найден: %s", filePath)
+		http.Error(w, "Файл не найден", http.StatusNotFound)
+		return
+	}
+
 	tmpl, err := template.ParseFiles(filePath)
 	if err != nil {
 		fmt.Println("filePath", filePath)

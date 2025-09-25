@@ -13,6 +13,8 @@ import (
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/service"
 )
 
+const INDEX_HTML = "index.html"
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Метод не разрешен", http.StatusMethodNotAllowed)
@@ -27,10 +29,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	parentDir := filepath.Dir(cwd)
-	filePath := filepath.Join(parentDir, "index.html")
+	filePath := filepath.Join(parentDir, INDEX_HTML)
 
 	tmpl, err := template.ParseFiles(filePath)
 	if err != nil {
+		fmt.Println("filePath", filePath)
 		log.Printf("Ошибка при парсинге шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
 		return

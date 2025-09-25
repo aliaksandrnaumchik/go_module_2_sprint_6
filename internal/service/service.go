@@ -45,7 +45,7 @@ func isMorse(input string) bool {
 
 func isPlainText(input string) bool {
 	for _, char := range input {
-		if unicode.Is(unicode.Cyrillic, char) || unicode.IsLetter(char) || unicode.IsNumber(char) {
+		if unicode.IsLetter(char) || unicode.IsNumber(char) {
 			return true
 		}
 	}

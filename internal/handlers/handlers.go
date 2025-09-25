@@ -40,6 +40,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if err := templateFile.Execute(w, nil); err != nil {
 		log.Printf("Ошибка при выполнении шаблона: %v", err)
 		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -107,8 +108,6 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := convertedContent
-
-	w.Header().Set("Content-Type", "application/json")
 
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "    ")

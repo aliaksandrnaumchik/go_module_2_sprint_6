@@ -38,7 +38,7 @@ func AutoConvert(input string) (string, error) {
 		morse := morse.ToMorse(input)
 		return morse, nil
 	} else if !isUtf8(input) {
-		return utf8Convert(input)
+		return input, nil
 	}
 	return "", fmt.Errorf("ошибка конвертации в Морзе: %s", input)
 }

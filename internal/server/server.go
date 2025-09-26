@@ -37,6 +37,6 @@ func NewServer(logger *log.Logger) *Server {
 }
 
 func (s *Server) Start() error {
-	s.logger.Println("Запуск сервера на порту 8080...")
+	s.logger.Println("Запуск сервера на порту 8080")
 	return s.server.ListenAndServe()
 }

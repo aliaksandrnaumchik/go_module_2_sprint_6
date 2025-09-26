@@ -31,6 +31,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	parentDir := filepath.Dir(cwd)
 	filePath := filepath.Join(parentDir, INDEX_HTML)
 
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		log.Printf("Файл не найден: %s", filePath)
 		http.Error(w, "Файл не найден", http.StatusNotFound)

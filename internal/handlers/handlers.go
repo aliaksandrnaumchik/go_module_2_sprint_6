@@ -64,14 +64,14 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(32 << 20) // 32 MB limit
 	if err != nil {
 		log.Printf("Ошибка при парсинге формы: %v", err)
-		http.Error(w, "Ошибка загрузки файла", http.StatusInternalServerError)
+		http.Error(w, "Ошибка загрузки файла", http.StatusBadRequest)
 		return
 	}
 
 	file, handler, err := r.FormFile("myFile")
 	if err != nil {
 		log.Printf("Ошибка при получении файла: %v", err)
-		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
+		http.Error(w, "Внутренняя ошибка сервера", http.StatusBadRequest)
 		return
 	}
 	defer file.Close()
@@ -79,7 +79,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 	content, err := io.ReadAll(file)
 	if err != nil {
 		log.Printf("Ошибка при чтении файла: %v", err)
-		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
+		http.Error(w, "Внутренняя ошибка сервера", http.StatusBadRequest)
 		return
 	}
 
@@ -115,6 +115,6 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Write([]byte(convertedContent))
 }

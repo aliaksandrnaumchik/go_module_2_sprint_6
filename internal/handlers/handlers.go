@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"html/template"
 	"io"
 	"log"
 	"net/http"
@@ -34,25 +33,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		log.Printf("Файл не найден: %s", filePath)
-		http.Error(w, "Файл не найден", http.StatusNotFound)
-		return
-	}
-
-	tmpl, err := template.ParseFiles(filePath)
-	if err != nil {
-		fmt.Println("filePath", filePath)
-		log.Printf("Ошибка при парсинге шаблона: %v", err)
-		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
-		return
-	}
-
-	if err := tmpl.Execute(w, nil); err != nil {
-		log.Printf("Ошибка при выполнении шаблона: %v", err)
-		http.Error(w, "Внутренняя ошибка сервера", http.StatusInternalServerError)
-		return
-	}
+	http.ServeFile(w, r, filePath)
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {

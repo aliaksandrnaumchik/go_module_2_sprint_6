@@ -30,10 +30,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	parentDir := filepath.Dir(cwd)
 	filePath := filepath.Join(parentDir, INDEX_HTML)
 
+	r.Header.Add("Content-Type", "text/html")
+	http.ServeFile(w, r, filePath)
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-
-	http.ServeFile(w, r, filePath)
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {

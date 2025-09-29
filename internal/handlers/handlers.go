@@ -20,6 +20,9 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Printf("Ошибка при получении текущей директории: %v", err)
@@ -32,9 +35,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 	r.Header.Add("Content-Type", "text/html")
 	http.ServeFile(w, r, filePath)
-
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
 }
 
 func UploadHandler(w http.ResponseWriter, r *http.Request) {
